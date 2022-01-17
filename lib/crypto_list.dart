@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:layout/add_symbol.dart';
 import 'package:layout/api_service.dart';
 import 'package:layout/coin_data.dart';
+import 'package:layout/symbol.dart';
 import 'package:logger/logger.dart';
+
+import 'database/database.dart';
 
 class CryptoListPage extends StatefulWidget {
   const CryptoListPage({Key? key}) : super(key: key);
@@ -16,9 +20,27 @@ class _CryptoListPageState extends State<CryptoListPage> {
   var apiService = APiService();
   List data = [];
   List<CoinData> cDataList = [];
+  List<String> symbolList = [];
 
-  Future fetchCoinData() async {
-    data = await apiService.getCoinData();
+  Future getSymbolList() async {
+    final database =
+        await $FloorAppDatabase.databaseBuilder('my_database.db').build();
+    final symbolDao = database.symbolDao;
+    Stream<List<Symbol>> myData = symbolDao.getAllSymbols();
+    myData.listen((event) {
+      symbolList.clear();
+      for (var item in event) {
+        symbolList.add(item.symbol);
+      }
+      //Converts list to String
+      String convertedList = symbolList.join(',');
+      log.i(convertedList);
+      fetchCoinData(convertedList); //Passes CoinList String to FetchCoinData
+    });
+  }
+
+  Future fetchCoinData(String coinList) async {
+    data = await apiService.getCoinData(coinList);
     var price = data[0]['price'];
     cDataList.clear();
     log.i(price);
@@ -61,9 +83,17 @@ class _CryptoListPageState extends State<CryptoListPage> {
         actions: [
           IconButton(
               onPressed: () {
-                fetchCoinData();
+                getSymbolList(); // get symbol list from local db
               },
-              icon: const Icon(Icons.refresh))
+              icon: const Icon(Icons.refresh)),
+          IconButton(
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const AddSymbolPage()));
+              },
+              icon: const Icon(Icons.add))
         ],
       ),
       body: ListView(

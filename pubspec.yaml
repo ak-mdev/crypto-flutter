@@ -11,6 +11,7 @@ dependencies:
   logger: any
   # import 'package:logger/logger.dart';
   flutter_svg: ^1.0.1
+  floor: any
 
 
   flutter:
@@ -21,6 +22,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: any
+  floor_generator: any
+  build_runner: any
 
 flutter:
   uses-material-design: true
