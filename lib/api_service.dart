@@ -7,7 +7,6 @@ import 'package:logger/logger.dart';
 class APiService {
   var log = Logger();
   var apiKey = 'e2927c2de61962e52b76c9625c78ed7c7631ce18';
-  String coinList = 'BTC,ETH,SOL,HEX,SHIB,ADA';
 
 
   Future getCoinData(String coinList) async {
@@ -15,7 +14,7 @@ class APiService {
     final response = await http.get(Uri.parse(url));
     List coinData = json.decode(response.body);
     log.i(response.statusCode);
-    log.i(coinData);
+    //log.i(coinData);
     return coinData;
   }
 
@@ -24,7 +23,7 @@ class APiService {
     final response = await http.get(Uri.parse(url));
     List coinData = json.decode(response.body);
     log.i(response.statusCode);
-    log.i(coinData);
+    //log.i(coinData);
     return coinData;
 
   }

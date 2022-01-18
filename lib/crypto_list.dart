@@ -134,18 +134,21 @@ class _CryptoListPageState extends State<CryptoListPage> {
                     ],
                   ),
                 ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      cDataList[index].name,
-                      style: const TextStyle(fontSize: 30),
-                    ),
-                    Text(
-                      '\$${cDataList[index].price}',
-                      style: const TextStyle(fontSize: 23),
-                    )
-                  ],
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        cDataList[index].name,
+                        style: const TextStyle(fontSize: 30),
+                        overflow: TextOverflow.fade,
+                      ),
+                      Text(
+                        '\$${cDataList[index].price}',
+                        style: const TextStyle(fontSize: 23),
+                      )
+                    ],
+                  ),
                 )
               ],
             ),
