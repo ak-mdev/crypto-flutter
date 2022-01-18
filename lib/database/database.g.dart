@@ -133,6 +133,12 @@ class _$SymbolDao extends SymbolDao {
   }
 
   @override
+  Future<void> deleteBySymbol(String symbol) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM Symbol WHERE symbol = ?1',
+        arguments: [symbol]);
+  }
+
+  @override
   Future<void> insertSymbol(Symbol symbol) async {
     await _symbolInsertionAdapter.insert(symbol, OnConflictStrategy.abort);
   }

@@ -73,7 +73,7 @@ class _CryptoListPageState extends State<CryptoListPage> {
   @override
   void initState() {
     super.initState();
-    //apiService.getCoinData();
+    getSymbolList();
   }
 
   @override
@@ -84,6 +84,7 @@ class _CryptoListPageState extends State<CryptoListPage> {
         actions: [
           IconButton(
               onPressed: () {
+                symbolList.clear();
                 getSymbolList(); // get symbol list from local db
               },
               icon: const Icon(Icons.refresh)),
@@ -101,17 +102,16 @@ class _CryptoListPageState extends State<CryptoListPage> {
         children: List.generate(cDataList.length, (index) {
           final item = cDataList[index];
           return Dismissible(
-            key: Key('$item'),
+            key: UniqueKey(),
+            direction: DismissDirection.startToEnd,
             onDismissed: (direction) async {
               final database =
               await $FloorAppDatabase.databaseBuilder('my_database.db').build();
-              var id = int.parse(cDataList[index].id);
+              //var id = int.parse(cDataList[index].id);
               final symbolDao = database.symbolDao;
-              symbolDao.deleteSymbol(Symbol(symbol: item.symbol));
-              
-              setState(() {
-                symbolDao.deleteSymbol(Symbol(id: id, symbol: item.symbol));
-              });
+              symbolList.removeAt(index);
+              await symbolDao.deleteBySymbol(item.symbol.toString());
+
             },
             child: Card(
               elevation: 10,
