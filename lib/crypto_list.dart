@@ -5,6 +5,7 @@ import 'package:layout/api_service.dart';
 import 'package:layout/coin_data.dart';
 import 'package:layout/symbol.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 import 'database/database.dart';
 
@@ -98,59 +99,74 @@ class _CryptoListPageState extends State<CryptoListPage> {
       ),
       body: ListView(
         children: List.generate(cDataList.length, (index) {
-          return Card(
-            elevation: 10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: 150,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: cDataList[index].logoUrl.contains('svg')
-                              ? SvgPicture.network(
-                                  cDataList[index].logoUrl,
-                                  semanticsLabel: cDataList[index].symbol,
-                                  width: 75,
-                                  height: 75,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.network(
-                                  cDataList[index].logoUrl,
-                                  width: 75,
-                                  height: 75,
-                                  fit: BoxFit.cover,
-                                )),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 8.0),
-                        child: Text(
-                          cDataList[index].symbol,
-                          style: const TextStyle(fontSize: 18),
+          final item = cDataList[index];
+          return Dismissible(
+            key: Key('$item'),
+            onDismissed: (direction) async {
+              final database =
+              await $FloorAppDatabase.databaseBuilder('my_database.db').build();
+              var id = int.parse(cDataList[index].id);
+              final symbolDao = database.symbolDao;
+              symbolDao.deleteSymbol(Symbol(symbol: item.symbol));
+              
+              setState(() {
+                symbolDao.deleteSymbol(Symbol(id: id, symbol: item.symbol));
+              });
+            },
+            child: Card(
+              elevation: 10,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 150,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                            padding: const EdgeInsets.all(16.0),
+                            child: cDataList[index].logoUrl.contains('svg')
+                                ? SvgPicture.network(
+                                    cDataList[index].logoUrl,
+                                    semanticsLabel: cDataList[index].symbol,
+                                    width: 75,
+                                    height: 75,
+                                    fit: BoxFit.cover,
+                                  )
+                                : Image.network(
+                                    cDataList[index].logoUrl,
+                                    width: 75,
+                                    height: 75,
+                                    fit: BoxFit.cover,
+                                  )),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 8.0),
+                          child: Text(
+                            cDataList[index].symbol,
+                            style: const TextStyle(fontSize: 18),
+                          ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        cDataList[index].name,
-                        style: const TextStyle(fontSize: 30),
-                        overflow: TextOverflow.fade,
-                      ),
-                      Text(
-                        '\$${cDataList[index].price}',
-                        style: const TextStyle(fontSize: 23),
-                      )
-                    ],
-                  ),
-                )
-              ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          cDataList[index].name,
+                          style: const TextStyle(fontSize: 30),
+                          overflow: TextOverflow.fade,
+                        ),
+                        Text(
+                          '\$${cDataList[index].price}',
+                          style: const TextStyle(fontSize: 23),
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           );
         }),
