@@ -1,14 +1,12 @@
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:layout/api_service.dart';
-import 'package:layout/database/database.dart';
 import 'package:layout/symbol.dart';
+import 'package:layout/symbol_dao.dart';
 import 'package:logger/logger.dart';
 
 class AddSymbolPage extends StatefulWidget {
   const AddSymbolPage({Key? key}) : super(key: key);
-
 
   @override
   _AddSymbolPageState createState() => _AddSymbolPageState();
@@ -22,8 +20,7 @@ class _AddSymbolPageState extends State<AddSymbolPage> {
   List data = [];
   String name = '';
   String price = '';
-
-
+  final SymbolDao symbolDao = Get.find();
 
   Future searchCoinBySymbol(String symbol) async {
     data = await apiService.getCoinBySymbol(symbol);
@@ -31,10 +28,7 @@ class _AddSymbolPageState extends State<AddSymbolPage> {
       name = data[0]['name'];
       price = data[0]['price'];
     });
-
-
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +40,7 @@ class _AddSymbolPageState extends State<AddSymbolPage> {
         children: [
           Padding(
             padding:
-            const EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 8),
+                const EdgeInsets.only(top: 8, bottom: 8, right: 8, left: 8),
             child: TextFormField(
               controller: searchController,
               textCapitalization: TextCapitalization.characters,
@@ -69,18 +63,20 @@ class _AddSymbolPageState extends State<AddSymbolPage> {
           ),
           Text('Crypto: $name'),
           Text('Price: \$$price'),
-          MaterialButton(onPressed: () async {
-            final database = await $FloorAppDatabase
+          MaterialButton(
+            onPressed: () async {
+              /*final database = await $FloorAppDatabase
                 .databaseBuilder('my_database.db')
                 .build();
-            final symbolDao = database.symbolDao;
-            var newSymbol = Symbol(symbol: searchController.text);
-            symbolDao.insertSymbol(newSymbol);
-            searchController.text = '';
-          },
-          color: Colors.blue,
-          textColor: Colors.white,
-          child: const Text('Add to List'),)
+            final symbolDao = database.symbolDao;*/
+              var newSymbol = Symbol(symbol: searchController.text);
+              symbolDao.insertSymbol(newSymbol);
+              searchController.text = '';
+            },
+            color: Colors.blue,
+            textColor: Colors.white,
+            child: const Text('Add to List'),
+          )
         ],
       ),
     );

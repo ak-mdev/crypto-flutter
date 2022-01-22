@@ -10,9 +10,10 @@ dependencies:
   http: any
   logger: any
   # import 'package:logger/logger.dart';
-  flutter_svg: ^1.0.1
+  flutter_svg: ^1.0.3
   floor: any
   flutter_slidable: ^1.2.0
+  get: any
 
 
   flutter:

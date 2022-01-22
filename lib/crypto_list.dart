@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:layout/add_symbol.dart';
@@ -174,3 +175,4 @@ class _CryptoListPageState extends State<CryptoListPage> {
     );
   }
 }
+*/
