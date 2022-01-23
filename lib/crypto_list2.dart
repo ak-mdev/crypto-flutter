@@ -21,7 +21,7 @@ class _CryptoListPageState extends State<CryptoList2Page> {
   final SymbolDao symbolDao = Get.find();
   List<Symbol> symbols = [];
   List<String> symbolList = [];
-  List<CoinData> coinDataList = [];
+  //List<CoinData> coinDataList = [];
   List myCoinData = [];
 
   final apiService = APiService();
@@ -29,43 +29,20 @@ class _CryptoListPageState extends State<CryptoList2Page> {
   @override
   void initState() {
     super.initState();
-    //getSymbolData();
   }
-
-  /*Future fetchCoinData(String coinList) async {
-    myCoinData = await apiService.getCoinData(coinList);
-    var price = myCoinData[0]['price'];
-    coinDataList.clear();
-    log.i(price);
-
-    for (var i = 0; i < myCoinData.length; i++) {
-      String id = myCoinData[i]['id'];
-      String price = myCoinData[i]['price'];
-      String symbol = myCoinData[i]['symbol'];
-      String name = myCoinData[i]['name'];
-      String logoUrl = myCoinData[i]['logo_url'];
-      String timeStamp = myCoinData[i]['price_timestamp'];
-      double priceD = double.parse(price);
-      priceD > 0.01 ? price = priceD.toStringAsFixed(2) : price = price;
-
-      coinDataList.add(CoinData(
-          id: id,
-          price: price,
-          symbol: symbol,
-          name: name,
-          logoUrl: logoUrl,
-          timeStamp: timeStamp));
-    }
-
-    setState(() {
-      coinDataList;
-    });
-  }*/
 
   convertSymbolListToString(List<String> symbolList) {
     String convertedList = symbolList.join(',');
     log.i(convertedList);
     return convertedList;
+  }
+
+  Future deleteSymbolFromDB(String symbol) async {
+    await symbolDao.deleteBySymbol(symbol);
+  }
+
+  Future refreshData(var coinDataList) async {
+    apiService.getCoinData(convertSymbolListToString(coinDataList));
   }
 
   @override
@@ -74,11 +51,9 @@ class _CryptoListPageState extends State<CryptoList2Page> {
         appBar: AppBar(
           title: const Text('Cryptology'),
           actions: [
-            IconButton(
-                onPressed: () {
-                  //getSymbolList(); // get symbol list from local db
-                },
-                icon: const Icon(Icons.refresh)),
+            IconButton(onPressed: () {
+              //refreshData(coinDataList);
+            },  icon: const Icon(Icons.refresh)),
             IconButton(
                 onPressed: () {
                   Navigator.push(
@@ -87,9 +62,6 @@ class _CryptoListPageState extends State<CryptoList2Page> {
                           builder: (context) => const AddSymbolPage()));
                 },
                 icon: const Icon(Icons.add)),
-            IconButton(onPressed: () {
-
-            }, icon: const Icon(Icons.delete))
           ],
         ),
         body: StreamBuilder<List<Symbol>>(
@@ -101,9 +73,7 @@ class _CryptoListPageState extends State<CryptoList2Page> {
                 for (var i = 0; i < symbols.length; i++) {
                   symbolList.add(symbols[i].symbol);
                 }
-
                 String coins = convertSymbolListToString(symbolList);
-                log.i('XXX ${convertSymbolListToString(symbolList)}');
 
                 return FutureBuilder(
                     future: apiService.getCoinData(coins),
@@ -113,7 +83,20 @@ class _CryptoListPageState extends State<CryptoList2Page> {
                         return ListView.builder(
                             itemCount: myCoinData.length,
                             itemBuilder: (context, index) {
-                              return coinCard(index);
+                              return Dismissible(
+                                 // key: Key('item ${myCoinData[index]}'),
+                                  key: UniqueKey(),
+                                  direction: DismissDirection.startToEnd,
+                                  onDismissed: (direction) {
+                                    setState(() {
+                                    //  coinDataList.removeAt(index);
+                                     // symbolList.removeAt(index);
+                                      deleteSymbolFromDB('${myCoinData[index]['symbol']}');
+
+                                    });
+
+                                  },
+                                  child: coinCard(index));
                             });
                       }
                       return const CircularProgressIndicator();

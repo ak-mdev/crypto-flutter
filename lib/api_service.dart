@@ -14,7 +14,7 @@ class APiService {
     final response = await http.get(Uri.parse(url));
     List coinData = json.decode(response.body);
     log.i(response.statusCode);
-    //log.i(coinData);
+    log.i(coinData);
     return coinData;
   }
 
