@@ -1,6 +1,6 @@
 
 import 'package:floor/floor.dart';
-import 'package:layout/symbol.dart';
+import 'package:layout/model/symbol.dart';
 
 @dao
 abstract class SymbolDao{

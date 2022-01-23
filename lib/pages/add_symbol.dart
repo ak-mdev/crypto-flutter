@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:layout/api_service.dart';
-import 'package:layout/symbol.dart';
-import 'package:layout/symbol_dao.dart';
+import 'package:layout/network/api_service.dart';
+import 'package:layout/model/symbol.dart';
+import 'package:layout/database/symbol_dao.dart';
 import 'package:logger/logger.dart';
 
 class AddSymbolPage extends StatefulWidget {

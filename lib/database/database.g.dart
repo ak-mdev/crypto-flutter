@@ -61,7 +61,7 @@ class _$AppDatabase extends AppDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
-  SymbolDao? _symbolDaoInstance;
+  CoinBigDataDao? _coinBigDataDaoInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
       [Callback? callback]) async {
@@ -82,7 +82,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `Symbol` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `CoinBigData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL, `name` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `price` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `circulatingSupply` TEXT NOT NULL, `maxSupply` TEXT NOT NULL, `rank` TEXT NOT NULL, `high` TEXT NOT NULL, `highTimestamp` TEXT NOT NULL, `D1Volume` TEXT NOT NULL, `D1PriceChange` TEXT NOT NULL, `D1PriceChangePct` TEXT NOT NULL, `D1VolChange` TEXT NOT NULL, `D1VolChangeOct` TEXT NOT NULL, `D30Volume` TEXT NOT NULL, `D30PriceChange` TEXT NOT NULL, `D30PriceChangePct` TEXT NOT NULL, `D30VolChange` TEXT NOT NULL, `D30VolChangePct` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -91,26 +91,71 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
-  SymbolDao get symbolDao {
-    return _symbolDaoInstance ??= _$SymbolDao(database, changeListener);
+  CoinBigDataDao get coinBigDataDao {
+    return _coinBigDataDaoInstance ??=
+        _$CoinBigDataDao(database, changeListener);
   }
 }
 
-class _$SymbolDao extends SymbolDao {
-  _$SymbolDao(this.database, this.changeListener)
+class _$CoinBigDataDao extends CoinBigDataDao {
+  _$CoinBigDataDao(this.database, this.changeListener)
       : _queryAdapter = QueryAdapter(database, changeListener),
-        _symbolInsertionAdapter = InsertionAdapter(
+        _coinBigDataInsertionAdapter = InsertionAdapter(
             database,
-            'Symbol',
-            (Symbol item) =>
-                <String, Object?>{'id': item.id, 'symbol': item.symbol},
+            'CoinBigData',
+            (CoinBigData item) => <String, Object?>{
+                  'id': item.id,
+                  'symbol': item.symbol,
+                  'name': item.name,
+                  'logoUrl': item.logoUrl,
+                  'status': item.status,
+                  'price': item.price,
+                  'timestamp': item.timestamp,
+                  'circulatingSupply': item.circulatingSupply,
+                  'maxSupply': item.maxSupply,
+                  'rank': item.rank,
+                  'high': item.high,
+                  'highTimestamp': item.highTimestamp,
+                  'D1Volume': item.D1Volume,
+                  'D1PriceChange': item.D1PriceChange,
+                  'D1PriceChangePct': item.D1PriceChangePct,
+                  'D1VolChange': item.D1VolChange,
+                  'D1VolChangeOct': item.D1VolChangeOct,
+                  'D30Volume': item.D30Volume,
+                  'D30PriceChange': item.D30PriceChange,
+                  'D30PriceChangePct': item.D30PriceChangePct,
+                  'D30VolChange': item.D30VolChange,
+                  'D30VolChangePct': item.D30VolChangePct
+                },
             changeListener),
-        _symbolDeletionAdapter = DeletionAdapter(
+        _coinBigDataDeletionAdapter = DeletionAdapter(
             database,
-            'Symbol',
+            'CoinBigData',
             ['id'],
-            (Symbol item) =>
-                <String, Object?>{'id': item.id, 'symbol': item.symbol},
+            (CoinBigData item) => <String, Object?>{
+                  'id': item.id,
+                  'symbol': item.symbol,
+                  'name': item.name,
+                  'logoUrl': item.logoUrl,
+                  'status': item.status,
+                  'price': item.price,
+                  'timestamp': item.timestamp,
+                  'circulatingSupply': item.circulatingSupply,
+                  'maxSupply': item.maxSupply,
+                  'rank': item.rank,
+                  'high': item.high,
+                  'highTimestamp': item.highTimestamp,
+                  'D1Volume': item.D1Volume,
+                  'D1PriceChange': item.D1PriceChange,
+                  'D1PriceChangePct': item.D1PriceChangePct,
+                  'D1VolChange': item.D1VolChange,
+                  'D1VolChangeOct': item.D1VolChangeOct,
+                  'D30Volume': item.D30Volume,
+                  'D30PriceChange': item.D30PriceChange,
+                  'D30PriceChangePct': item.D30PriceChangePct,
+                  'D30VolChange': item.D30VolChange,
+                  'D30VolChangePct': item.D30VolChangePct
+                },
             changeListener);
 
   final sqflite.DatabaseExecutor database;
@@ -119,32 +164,60 @@ class _$SymbolDao extends SymbolDao {
 
   final QueryAdapter _queryAdapter;
 
-  final InsertionAdapter<Symbol> _symbolInsertionAdapter;
+  final InsertionAdapter<CoinBigData> _coinBigDataInsertionAdapter;
 
-  final DeletionAdapter<Symbol> _symbolDeletionAdapter;
+  final DeletionAdapter<CoinBigData> _coinBigDataDeletionAdapter;
 
   @override
-  Stream<List<Symbol>> getAllSymbols() {
-    return _queryAdapter.queryListStream('SELECT * FROM Symbol',
-        mapper: (Map<String, Object?> row) =>
-            Symbol(id: row['id'] as int?, symbol: row['symbol'] as String),
-        queryableName: 'Symbol',
+  Stream<List<CoinBigData>> getAllCoins() {
+    return _queryAdapter.queryListStream('SELECT * FROM CoinBigData',
+        mapper: (Map<String, Object?> row) => CoinBigData(
+            id: row['id'] as int?,
+            symbol: row['symbol'] as String,
+            name: row['name'] as String,
+            logoUrl: row['logoUrl'] as String,
+            status: row['status'] as String,
+            price: row['price'] as String,
+            timestamp: row['timestamp'] as String,
+            circulatingSupply: row['circulatingSupply'] as String,
+            maxSupply: row['maxSupply'] as String,
+            rank: row['rank'] as String,
+            high: row['high'] as String,
+            highTimestamp: row['highTimestamp'] as String,
+            D1Volume: row['D1Volume'] as String,
+            D1PriceChange: row['D1PriceChange'] as String,
+            D1PriceChangePct: row['D1PriceChangePct'] as String,
+            D1VolChange: row['D1VolChange'] as String,
+            D1VolChangeOct: row['D1VolChangeOct'] as String,
+            D30Volume: row['D30Volume'] as String,
+            D30PriceChange: row['D30PriceChange'] as String,
+            D30PriceChangePct: row['D30PriceChangePct'] as String,
+            D30VolChange: row['D30VolChange'] as String,
+            D30VolChangePct: row['D30VolChangePct'] as String),
+        queryableName: 'CoinBigData',
         isView: false);
   }
 
   @override
-  Future<void> deleteBySymbol(String symbol) async {
-    await _queryAdapter.queryNoReturn('DELETE FROM Symbol WHERE symbol = ?1',
+  Future<void> deleteAllCoins() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM CoinBigData');
+  }
+
+  @override
+  Future<void> deleteCoinBySymbol(String symbol) async {
+    await _queryAdapter.queryNoReturn(
+        'DELETE FROM CoinBigData WHERE symbol = ?1',
         arguments: [symbol]);
   }
 
   @override
-  Future<void> insertSymbol(Symbol symbol) async {
-    await _symbolInsertionAdapter.insert(symbol, OnConflictStrategy.abort);
+  Future<void> insertCoin(CoinBigData coinBigData) async {
+    await _coinBigDataInsertionAdapter.insert(
+        coinBigData, OnConflictStrategy.abort);
   }
 
   @override
-  Future<void> deleteSymbol(Symbol symbol) async {
-    await _symbolDeletionAdapter.delete(symbol);
+  Future<void> deleteCoin(CoinBigData coinBigData) async {
+    await _coinBigDataDeletionAdapter.delete(coinBigData);
   }
 }
