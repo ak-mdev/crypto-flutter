@@ -7,6 +7,9 @@ abstract class CoinBigDataDao {
   @Query('SELECT * FROM CoinBigData')
   Stream<List<CoinBigData>> getAllCoins();
 
+  @Query('SELECT * FROM CoinBigData WHERE symbol = :symbol')
+  Stream<CoinBigData?> getCoinDataBySymbol(String symbol);
+
   @Query('DELETE FROM CoinBigData')
   Future<void> deleteAllCoins();
 
