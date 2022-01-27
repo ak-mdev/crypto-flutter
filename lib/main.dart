@@ -7,10 +7,11 @@ import 'database/database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final database = await $FloorAppDatabase.databaseBuilder('my_database.db').build();
- // final dao = database.symbolDao;
+  final database =
+      await $FloorAppDatabase.databaseBuilder('my_database.db').build();
   final coinDao = database.coinBigDataDao;
-  //Get.put(dao);
+  final favoritesDao = database.favoritesDao;
+  Get.put(favoritesDao);
   Get.put(coinDao);
   runApp(const MyApp());
 }
@@ -27,52 +28,40 @@ class MyApp extends StatelessWidget {
       home: const MyHomePage(),
     );
   }
-
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
-
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-
   int currentIndex = 0;
-  final pages = [
-    const CryptoListPage(),
-    const FavoritesPage()
-
-  ];
-
+  final pages = [const CryptoListPage(), const FavoritesPage()];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: IndexedStack(
         index: currentIndex,
         children: pages,
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.list_alt),
-          label: 'Cryptos',
-          backgroundColor: Colors.blue),
-
+              label: 'Cryptos',
+              backgroundColor: Colors.blue),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border_outlined),
               label: 'Favorite',
               backgroundColor: Colors.blue),
         ],
       ),
-
     );
   }
 }

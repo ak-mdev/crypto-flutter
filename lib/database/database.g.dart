@@ -61,6 +61,8 @@ class _$AppDatabase extends AppDatabase {
     changeListener = listener ?? StreamController<String>.broadcast();
   }
 
+  FavoritesDao? _favoritesDaoInstance;
+
   CoinBigDataDao? _coinBigDataDaoInstance;
 
   Future<sqflite.Database> open(String path, List<Migration> migrations,
@@ -83,6 +85,8 @@ class _$AppDatabase extends AppDatabase {
       onCreate: (database, version) async {
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `CoinBigData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL, `name` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `price` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `circulatingSupply` TEXT NOT NULL, `maxSupply` TEXT NOT NULL, `rank` TEXT NOT NULL, `high` TEXT NOT NULL, `highTimestamp` TEXT NOT NULL, `D1Volume` TEXT NOT NULL, `D1PriceChange` TEXT NOT NULL, `D1PriceChangePct` TEXT NOT NULL, `D1VolChange` TEXT NOT NULL, `D1VolChangeOct` TEXT NOT NULL, `D30Volume` TEXT NOT NULL, `D30PriceChange` TEXT NOT NULL, `D30PriceChangePct` TEXT NOT NULL, `D30VolChange` TEXT NOT NULL, `D30VolChangePct` TEXT NOT NULL)');
+        await database.execute(
+            'CREATE TABLE IF NOT EXISTS `SymbolData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `sym` TEXT NOT NULL)');
 
         await callback?.onCreate?.call(database, version);
       },
@@ -91,9 +95,56 @@ class _$AppDatabase extends AppDatabase {
   }
 
   @override
+  FavoritesDao get favoritesDao {
+    return _favoritesDaoInstance ??= _$FavoritesDao(database, changeListener);
+  }
+
+  @override
   CoinBigDataDao get coinBigDataDao {
     return _coinBigDataDaoInstance ??=
         _$CoinBigDataDao(database, changeListener);
+  }
+}
+
+class _$FavoritesDao extends FavoritesDao {
+  _$FavoritesDao(this.database, this.changeListener)
+      : _queryAdapter = QueryAdapter(database),
+        _symbolDataInsertionAdapter = InsertionAdapter(
+            database,
+            'SymbolData',
+            (SymbolData item) =>
+                <String, Object?>{'id': item.id, 'sym': item.sym});
+
+  final sqflite.DatabaseExecutor database;
+
+  final StreamController<String> changeListener;
+
+  final QueryAdapter _queryAdapter;
+
+  final InsertionAdapter<SymbolData> _symbolDataInsertionAdapter;
+
+  @override
+  Future<List<SymbolData>> getAllFavorites() async {
+    return _queryAdapter.queryList('SELECT * FROM SymbolData',
+        mapper: (Map<String, Object?> row) =>
+            SymbolData(id: row['id'] as int?, sym: row['sym'] as String));
+  }
+
+  @override
+  Future<void> deleteAllFavorites() async {
+    await _queryAdapter.queryNoReturn('DELETE FROM SymbolData');
+  }
+
+  @override
+  Future<void> deleteFavoriteBySymbol(String symbol) async {
+    await _queryAdapter.queryNoReturn('DELETE FROM SymbolData WHERE sym = ?1',
+        arguments: [symbol]);
+  }
+
+  @override
+  Future<void> insertFavorite(SymbolData symbolData) async {
+    await _symbolDataInsertionAdapter.insert(
+        symbolData, OnConflictStrategy.abort);
   }
 }
 

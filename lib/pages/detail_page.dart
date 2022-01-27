@@ -4,6 +4,8 @@ import 'package:get/get.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/database/coin_big_data_dao.dart';
+import 'package:layout/database/favorites_dao.dart';
+import 'package:layout/model/symbol_data.dart';
 import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
 
@@ -20,50 +22,89 @@ class _DetailPageState extends State<DetailPage> {
   Logger log = Logger();
   var repository = MyRepository();
   final CoinBigDataDao coinBigDataDao = Get.find();
+  final FavoritesDao favoritesDao = Get.find();
   CoinBigData? coinBigData;
+
+
+  List<String> symbols = [];
+
+  bool favIsSelected = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getFavoriteState(widget.symbol);
+  }
+
+  Future getFavoriteState(String mySymbol) async {
+    List<SymbolData> symbolData = [];
+    symbolData = favoritesDao.getAllFavorites() as List<SymbolData>;
+    symbols.clear();
+    for (int i = 0; i < symbolData.length; i++) {
+      String symbol = symbolData[i].sym;
+      symbols.add(symbol);
+    }
+
+    log.i(symbols);
+    symbols.contains(mySymbol) ? favIsSelected = true : favIsSelected = false;
+
+    setState(() {
+      favIsSelected;
+      log.i(favIsSelected);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var mySymbol = widget.symbol;
+
     bool isNegative = false;
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Detail'),
-        actions: [
-          IconButton(
-              onPressed: () {
-                repository.refreshData();
-              },
-              icon: const Icon(Icons.refresh)),
-          IconButton(
-              onPressed: () {
-                log.i('Favorite Tap');
-              },
-              icon: const Icon(Icons.favorite_border))
-        ],
-      ),
-      body: StreamBuilder<CoinBigData?>(
-        stream: coinBigDataDao.getCoinDataBySymbol(mySymbol),
-        builder: (_, snapshot) {
-          if (snapshot.hasData) {
-            coinBigData = snapshot.data;
-            coinBigData!.price.contains('-')
-                ? isNegative = true
-                : isNegative = false;
+        appBar: AppBar(
+          title: const Text('Detail'),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  repository.refreshData();
+                },
+                icon: const Icon(Icons.refresh)),
+            IconButton(
+                onPressed: () async {
+                  log.i(symbols);
+                  if (favIsSelected) {
+                    await favoritesDao.deleteFavoriteBySymbol(mySymbol);
+                    getFavoriteState(mySymbol);
+                  } else {
+                    await favoritesDao.insertFavorite(SymbolData(sym: mySymbol));
+                    getFavoriteState(mySymbol);
 
-            return Stack(
-              children: [
-                logoImage(),
-                glassLayer(),
-                InfoLayer(coinBigData: coinBigData)
-              ],
-            );
-          }
-          return const Center(child: CircularProgressIndicator());
-        },
-      ),
-    );
+                  }
+                },
+                icon: favIsSelected
+                    ? const Icon(Icons.favorite)
+                    : const Icon((Icons.favorite_border)))
+          ],
+        ),
+        body: StreamBuilder<CoinBigData?>(
+            stream: coinBigDataDao.getCoinDataBySymbol(mySymbol),
+            builder: (_, snapshot) {
+              if (snapshot.hasData) {
+                coinBigData = snapshot.data;
+                coinBigData!.price.contains('-')
+                    ? isNegative = true
+                    : isNegative = false;
+
+                return Stack(
+                  children: [
+                    logoImage(),
+                    glassLayer(),
+                    InfoLayer(coinBigData: coinBigData)
+                  ],
+                );
+              }
+              return const Center(child: CircularProgressIndicator());
+            }));
   }
 
   GlassmorphicContainer glassLayer() {

@@ -1,11 +1,11 @@
 import 'package:floor/floor.dart';
 
 @entity
-class Symbol {
+class SymbolData {
   @PrimaryKey(autoGenerate: true)
   final int? id;
 
-  String symbol;
+  String sym;
 
-  Symbol({this.id, required this.symbol});
+  SymbolData({this.id, required this.sym});
 }
