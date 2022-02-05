@@ -77,15 +77,17 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) => setState(() => currentIndex = index),
+        backgroundColor: Colors.black87,
+        selectedItemColor: Colors.white,
+        unselectedItemColor: Colors.white60,
+
         items: const [
           BottomNavigationBarItem(
               icon: Icon(Icons.list_alt),
-              label: 'Cryptos',
-              backgroundColor: Colors.blue),
+              label: 'Cryptos'),
           BottomNavigationBarItem(
               icon: Icon(Icons.favorite_border_outlined),
-              label: 'Favorite',
-              backgroundColor: Colors.blue),
+              label: 'Favorite'),
         ],
       ),
     );

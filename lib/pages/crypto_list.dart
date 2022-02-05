@@ -33,6 +33,7 @@ class _CryptoListPageState extends State<CryptoListPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Cryptology'),
+          backgroundColor: Colors.black87,
           actions: [
             IconButton(
                 onPressed: () {

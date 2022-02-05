@@ -59,6 +59,7 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Detail'),
+          backgroundColor: Colors.black87,
           actions: [
             IconButton(
                 onPressed: () {
@@ -67,7 +68,7 @@ class _DetailPageState extends State<DetailPage> {
                 icon: const Icon(Icons.refresh)),
             IconButton(
                 onPressed: () async {
-                  log.i(symbols);
+                  //log.i(symbols);
                   if (favIsSelected) {
                     context
                         .read<ListProvider>()
