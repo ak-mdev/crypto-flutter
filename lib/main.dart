@@ -1,19 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:layout/pages/crypto_list.dart';
 import 'package:layout/pages/favorites_page.dart';
+import 'package:layout/database/provider.dart';
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 import 'database/database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   final database =
       await $FloorAppDatabase.databaseBuilder('my_database.db').build();
   final coinDao = database.coinBigDataDao;
   final favoritesDao = database.favoritesDao;
   Get.put(favoritesDao);
   Get.put(coinDao);
-  runApp(const MyApp());
+  runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => ListProvider())
+      ],
+  child: const MyApp(),));
 }
 
 class MyApp extends StatelessWidget {
@@ -39,7 +48,24 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
+  var log = Logger();
   final pages = [const CryptoListPage(), const FavoritesPage()];
+  final box = GetStorage();
+  List myList = [];
+
+
+  @override
+  void initState() {
+    super.initState();
+    getFavoritesList();
+  }
+
+  Future<void>getFavoritesList() async {
+    myList = await box.read('sym_list');
+    await context.read<ListProvider>().setSymList(myList);
+   // log.i(myList);
+  }
+
 
   @override
   Widget build(BuildContext context) {

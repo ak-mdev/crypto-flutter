@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:glassmorphism/glassmorphism.dart';
 import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/database/coin_big_data_dao.dart';
 import 'package:layout/database/favorites_dao.dart';
 import 'package:layout/model/symbol_data.dart';
 import 'package:layout/repository/repository.dart';
+import 'package:layout/database/provider.dart';
+import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
 
 class DetailPage extends StatefulWidget {
@@ -24,6 +27,8 @@ class _DetailPageState extends State<DetailPage> {
   final CoinBigDataDao coinBigDataDao = Get.find();
   final FavoritesDao favoritesDao = Get.find();
   CoinBigData? coinBigData;
+  List<String> symList = [];
+  final box = GetStorage();
 
 
   List<String> symbols = [];
@@ -33,30 +38,36 @@ class _DetailPageState extends State<DetailPage> {
   @override
   void initState() {
     super.initState();
-    getFavoriteState(widget.symbol);
+    //getFavoriteList(widget.symbol);
   }
 
-  Future getFavoriteState(String mySymbol) async {
-    List<SymbolData> symbolData = [];
-    symbolData = favoritesDao.getAllFavorites() as List<SymbolData>;
-    symbols.clear();
-    for (int i = 0; i < symbolData.length; i++) {
-      String symbol = symbolData[i].sym;
-      symbols.add(symbol);
-    }
+/* Future<void> getFavoriteList(String symbol) async {
 
-    log.i(symbols);
-    symbols.contains(mySymbol) ? favIsSelected = true : favIsSelected = false;
 
     setState(() {
       favIsSelected;
-      log.i(favIsSelected);
     });
+  }*/
+
+  setFavoriteIcon(bool isFavoriteSelected) {
+    if (isFavoriteSelected) {
+      favIsSelected = true;
+    } else {
+      favIsSelected = false;
+    }
+    setState(() {
+      favIsSelected;
+    });
+
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     var mySymbol = widget.symbol;
+    symList = context.watch<ListProvider>().symList;
+    symList.contains(mySymbol) ? favIsSelected = true : favIsSelected = false;
 
     bool isNegative = false;
 
@@ -73,11 +84,13 @@ class _DetailPageState extends State<DetailPage> {
                 onPressed: () async {
                   log.i(symbols);
                   if (favIsSelected) {
-                    await favoritesDao.deleteFavoriteBySymbol(mySymbol);
-                    getFavoriteState(mySymbol);
+                    context.read<ListProvider>().deleteFromSymList(symList, mySymbol);
+                    setFavoriteIcon(false);
+
+
                   } else {
-                    await favoritesDao.insertFavorite(SymbolData(sym: mySymbol));
-                    getFavoriteState(mySymbol);
+                    context.read<ListProvider>().addToList(mySymbol);
+                    setFavoriteIcon(true);
 
                   }
                 },

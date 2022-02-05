@@ -282,6 +282,43 @@ class _$CoinBigDataDao extends CoinBigDataDao {
   }
 
   @override
+  Future<List<CoinBigData?>> getCoinsInFavoritesList(
+      List<String> symList) async {
+    const offset = 1;
+    final _sqliteVariablesForSymList =
+        Iterable<String>.generate(symList.length, (i) => '?${i + offset}')
+            .join(',');
+    return _queryAdapter.queryList(
+        'SELECT * FROM CoinBigData WHERE symbol IN (' +
+            _sqliteVariablesForSymList +
+            ')',
+        mapper: (Map<String, Object?> row) => CoinBigData(
+            id: row['id'] as int?,
+            symbol: row['symbol'] as String,
+            name: row['name'] as String,
+            logoUrl: row['logoUrl'] as String,
+            status: row['status'] as String,
+            price: row['price'] as String,
+            timestamp: row['timestamp'] as String,
+            circulatingSupply: row['circulatingSupply'] as String,
+            maxSupply: row['maxSupply'] as String,
+            rank: row['rank'] as String,
+            high: row['high'] as String,
+            highTimestamp: row['highTimestamp'] as String,
+            D1Volume: row['D1Volume'] as String,
+            D1PriceChange: row['D1PriceChange'] as String,
+            D1PriceChangePct: row['D1PriceChangePct'] as String,
+            D1VolChange: row['D1VolChange'] as String,
+            D1VolChangeOct: row['D1VolChangeOct'] as String,
+            D30Volume: row['D30Volume'] as String,
+            D30PriceChange: row['D30PriceChange'] as String,
+            D30PriceChangePct: row['D30PriceChangePct'] as String,
+            D30VolChange: row['D30VolChange'] as String,
+            D30VolChangePct: row['D30VolChangePct'] as String),
+        arguments: [...symList]);
+  }
+
+  @override
   Future<void> deleteAllCoins() async {
     await _queryAdapter.queryNoReturn('DELETE FROM CoinBigData');
   }

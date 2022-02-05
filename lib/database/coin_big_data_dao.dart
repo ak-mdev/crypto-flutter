@@ -10,6 +10,9 @@ abstract class CoinBigDataDao {
   @Query('SELECT * FROM CoinBigData WHERE symbol = :symbol')
   Stream<CoinBigData?> getCoinDataBySymbol(String symbol);
 
+  @Query('SELECT * FROM CoinBigData WHERE symbol IN (:symList)')
+  Future<List<CoinBigData?>> getCoinsInFavoritesList(List<String> symList);
+
   @Query('DELETE FROM CoinBigData')
   Future<void> deleteAllCoins();
 
