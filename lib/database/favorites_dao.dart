@@ -1,6 +1,5 @@
 
 import 'package:floor/floor.dart';
-import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/model/symbol_data.dart';
 
 

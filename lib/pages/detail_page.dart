@@ -6,11 +6,10 @@ import 'package:glassmorphism/glassmorphism.dart';
 import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/database/coin_big_data_dao.dart';
 import 'package:layout/database/favorites_dao.dart';
-import 'package:layout/model/symbol_data.dart';
-import 'package:layout/repository/repository.dart';
 import 'package:layout/database/provider.dart';
-import 'package:provider/provider.dart';
+import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 class DetailPage extends StatefulWidget {
   final String symbol;
@@ -30,24 +29,15 @@ class _DetailPageState extends State<DetailPage> {
   List<String> symList = [];
   final box = GetStorage();
 
-
   List<String> symbols = [];
 
   bool favIsSelected = false;
+  bool isNegative = false;
 
   @override
   void initState() {
     super.initState();
-    //getFavoriteList(widget.symbol);
   }
-
-/* Future<void> getFavoriteList(String symbol) async {
-
-
-    setState(() {
-      favIsSelected;
-    });
-  }*/
 
   setFavoriteIcon(bool isFavoriteSelected) {
     if (isFavoriteSelected) {
@@ -58,18 +48,13 @@ class _DetailPageState extends State<DetailPage> {
     setState(() {
       favIsSelected;
     });
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
     var mySymbol = widget.symbol;
     symList = context.watch<ListProvider>().symList;
     symList.contains(mySymbol) ? favIsSelected = true : favIsSelected = false;
-
-    bool isNegative = false;
 
     return Scaffold(
         appBar: AppBar(
@@ -84,14 +69,13 @@ class _DetailPageState extends State<DetailPage> {
                 onPressed: () async {
                   log.i(symbols);
                   if (favIsSelected) {
-                    context.read<ListProvider>().deleteFromSymList(symList, mySymbol);
+                    context
+                        .read<ListProvider>()
+                        .deleteFromSymList(symList, mySymbol);
                     setFavoriteIcon(false);
-
-
                   } else {
                     context.read<ListProvider>().addToList(mySymbol);
                     setFavoriteIcon(true);
-
                   }
                 },
                 icon: favIsSelected
@@ -154,13 +138,13 @@ class _DetailPageState extends State<DetailPage> {
                 semanticsLabel: coinBigData!.symbol,
                 width: 250,
                 height: 250,
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.cover,
               )
             : Image.network(
                 coinBigData!.logoUrl,
                 width: 250,
                 height: 250,
-                fit: BoxFit.fitWidth,
+                fit: BoxFit.cover,
               ));
   }
 }
@@ -188,7 +172,6 @@ class InfoLayer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Material(
-        borderRadius: BorderRadius.circular(16),
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
         child: Column(
@@ -244,7 +227,6 @@ class InfoLayer extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Material(
-        borderRadius: BorderRadius.circular(16),
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
         child: Column(
@@ -310,7 +292,6 @@ class TitleCard extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: Material(
-        borderRadius: BorderRadius.circular(16),
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
         child: Column(
