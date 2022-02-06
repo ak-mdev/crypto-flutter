@@ -59,7 +59,7 @@ class _DetailPageState extends State<DetailPage> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Detail'),
-          backgroundColor: Colors.black87,
+          backgroundColor: Colors.blueGrey,
           actions: [
             IconButton(
                 onPressed: () {

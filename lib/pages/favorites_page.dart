@@ -36,7 +36,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Favorites'),
-        backgroundColor: Colors.black87,
+        backgroundColor: Colors.blueGrey,
       ),
       body: FutureBuilder(
         future: coinBigDataDao.getCoinsInFavoritesList(myList.cast()),
