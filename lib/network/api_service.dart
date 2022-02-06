@@ -10,11 +10,11 @@ class APiService {
 
 
   Future getCoinData(String coinList) async {
-    var url = 'https://api.nomics.com/v1/currencies/ticker?key=$apiKey&ids=$coinList&interval=1d,30d&per-page=100&page=1';
+    var url = 'https://api.nomics.com/v1/currencies/ticker?key=$apiKey&ids=$coinList&interval=1d,7d,30d&per-page=100&page=1';
     final response = await http.get(Uri.parse(url));
     List coinData = json.decode(response.body);
     //log.i(response.statusCode);
-    //log.i(coinData);
+    log.i(coinData);
     return coinData;
   }
 

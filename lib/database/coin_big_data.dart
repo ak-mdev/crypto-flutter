@@ -2,7 +2,6 @@ import 'package:floor/floor.dart';
 
 @entity
 class CoinBigData {
-
   @PrimaryKey(autoGenerate: true)
   final int? id;
 
@@ -22,6 +21,11 @@ class CoinBigData {
   String D1PriceChangePct;
   String D1VolChange;
   String D1VolChangeOct;
+  String D7Volume;
+  String D7PriceChange;
+  String D7PriceChangePct;
+  String D7VolChange;
+  String D7VolChangeOct;
   String D30Volume;
   String D30PriceChange;
   String D30PriceChangePct;
@@ -46,6 +50,11 @@ class CoinBigData {
       required this.D1PriceChangePct,
       required this.D1VolChange,
       required this.D1VolChangeOct,
+      required this.D7Volume,
+      required this.D7PriceChange,
+      required this.D7PriceChangePct,
+      required this.D7VolChange,
+      required this.D7VolChangeOct,
       required this.D30Volume,
       required this.D30PriceChange,
       required this.D30PriceChangePct,

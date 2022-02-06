@@ -29,6 +29,12 @@ class MyRepository {
       String d1PriceChangePct = data[i]['1d']['price_change_pct'];
       String d1VolChange = data[i]['1d']['volume_change'];
       String d1VolChangeOct = data[i]['1d']['volume_change_pct'];
+      String d7Volume = data[i]['7d']['volume'];
+      String d7PriceChange = data[i]['7d']['price_change'];
+      String d7PriceChangePct = data[i]['7d']['price_change_pct'];
+      String d7VolChange = data[i]['7d']['volume_change'];
+      String d7VolChangeOct = data[i]['7d']['volume_change_pct'];
+
       String d30Volume = data[i]['30d']['volume'];
       String d30PriceChange = data[i]['30d']['price_change'];
       String d30PriceChangePct = data[i]['30d']['price_change_pct'];
@@ -52,6 +58,11 @@ class MyRepository {
           D1PriceChangePct: d1PriceChangePct,
           D1VolChange: d1VolChange,
           D1VolChangeOct: d1VolChangeOct,
+          D7Volume: d7Volume,
+          D7PriceChange: d7PriceChange,
+          D7PriceChangePct: d7PriceChangePct,
+          D7VolChange: d7VolChange,
+          D7VolChangeOct: d7VolChangeOct,
           D30Volume: d30Volume,
           D30PriceChange: d30PriceChange,
           D30PriceChangePct: d30PriceChangePct,

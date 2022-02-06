@@ -84,7 +84,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CoinBigData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL, `name` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `price` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `circulatingSupply` TEXT NOT NULL, `maxSupply` TEXT NOT NULL, `rank` TEXT NOT NULL, `high` TEXT NOT NULL, `highTimestamp` TEXT NOT NULL, `D1Volume` TEXT NOT NULL, `D1PriceChange` TEXT NOT NULL, `D1PriceChangePct` TEXT NOT NULL, `D1VolChange` TEXT NOT NULL, `D1VolChangeOct` TEXT NOT NULL, `D30Volume` TEXT NOT NULL, `D30PriceChange` TEXT NOT NULL, `D30PriceChangePct` TEXT NOT NULL, `D30VolChange` TEXT NOT NULL, `D30VolChangePct` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `CoinBigData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL, `name` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `price` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `circulatingSupply` TEXT NOT NULL, `maxSupply` TEXT NOT NULL, `rank` TEXT NOT NULL, `high` TEXT NOT NULL, `highTimestamp` TEXT NOT NULL, `D1Volume` TEXT NOT NULL, `D1PriceChange` TEXT NOT NULL, `D1PriceChangePct` TEXT NOT NULL, `D1VolChange` TEXT NOT NULL, `D1VolChangeOct` TEXT NOT NULL, `D7Volume` TEXT NOT NULL, `D7PriceChange` TEXT NOT NULL, `D7PriceChangePct` TEXT NOT NULL, `D7VolChange` TEXT NOT NULL, `D7VolChangeOct` TEXT NOT NULL, `D30Volume` TEXT NOT NULL, `D30PriceChange` TEXT NOT NULL, `D30PriceChangePct` TEXT NOT NULL, `D30VolChange` TEXT NOT NULL, `D30VolChangePct` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `SymbolData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `sym` TEXT NOT NULL)');
 
@@ -172,6 +172,11 @@ class _$CoinBigDataDao extends CoinBigDataDao {
                   'D1PriceChangePct': item.D1PriceChangePct,
                   'D1VolChange': item.D1VolChange,
                   'D1VolChangeOct': item.D1VolChangeOct,
+                  'D7Volume': item.D7Volume,
+                  'D7PriceChange': item.D7PriceChange,
+                  'D7PriceChangePct': item.D7PriceChangePct,
+                  'D7VolChange': item.D7VolChange,
+                  'D7VolChangeOct': item.D7VolChangeOct,
                   'D30Volume': item.D30Volume,
                   'D30PriceChange': item.D30PriceChange,
                   'D30PriceChangePct': item.D30PriceChangePct,
@@ -201,6 +206,11 @@ class _$CoinBigDataDao extends CoinBigDataDao {
                   'D1PriceChangePct': item.D1PriceChangePct,
                   'D1VolChange': item.D1VolChange,
                   'D1VolChangeOct': item.D1VolChangeOct,
+                  'D7Volume': item.D7Volume,
+                  'D7PriceChange': item.D7PriceChange,
+                  'D7PriceChangePct': item.D7PriceChangePct,
+                  'D7VolChange': item.D7VolChange,
+                  'D7VolChangeOct': item.D7VolChangeOct,
                   'D30Volume': item.D30Volume,
                   'D30PriceChange': item.D30PriceChange,
                   'D30PriceChangePct': item.D30PriceChangePct,
@@ -240,6 +250,11 @@ class _$CoinBigDataDao extends CoinBigDataDao {
             D1PriceChangePct: row['D1PriceChangePct'] as String,
             D1VolChange: row['D1VolChange'] as String,
             D1VolChangeOct: row['D1VolChangeOct'] as String,
+            D7Volume: row['D7Volume'] as String,
+            D7PriceChange: row['D7PriceChange'] as String,
+            D7PriceChangePct: row['D7PriceChangePct'] as String,
+            D7VolChange: row['D7VolChange'] as String,
+            D7VolChangeOct: row['D7VolChangeOct'] as String,
             D30Volume: row['D30Volume'] as String,
             D30PriceChange: row['D30PriceChange'] as String,
             D30PriceChangePct: row['D30PriceChangePct'] as String,
@@ -271,6 +286,11 @@ class _$CoinBigDataDao extends CoinBigDataDao {
             D1PriceChangePct: row['D1PriceChangePct'] as String,
             D1VolChange: row['D1VolChange'] as String,
             D1VolChangeOct: row['D1VolChangeOct'] as String,
+            D7Volume: row['D7Volume'] as String,
+            D7PriceChange: row['D7PriceChange'] as String,
+            D7PriceChangePct: row['D7PriceChangePct'] as String,
+            D7VolChange: row['D7VolChange'] as String,
+            D7VolChangeOct: row['D7VolChangeOct'] as String,
             D30Volume: row['D30Volume'] as String,
             D30PriceChange: row['D30PriceChange'] as String,
             D30PriceChangePct: row['D30PriceChangePct'] as String,
@@ -310,6 +330,11 @@ class _$CoinBigDataDao extends CoinBigDataDao {
             D1PriceChangePct: row['D1PriceChangePct'] as String,
             D1VolChange: row['D1VolChange'] as String,
             D1VolChangeOct: row['D1VolChangeOct'] as String,
+            D7Volume: row['D7Volume'] as String,
+            D7PriceChange: row['D7PriceChange'] as String,
+            D7PriceChangePct: row['D7PriceChangePct'] as String,
+            D7VolChange: row['D7VolChange'] as String,
+            D7VolChangeOct: row['D7VolChangeOct'] as String,
             D30Volume: row['D30Volume'] as String,
             D30PriceChange: row['D30PriceChange'] as String,
             D30PriceChangePct: row['D30PriceChangePct'] as String,

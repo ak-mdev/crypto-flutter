@@ -164,6 +164,7 @@ class InfoLayer extends StatelessWidget {
       children: [
         TitleCard(coinBigData: coinBigData),
         oneDayCard(),
+        sevenDayCard(),
         thirtyDayCard()
       ],
     );
@@ -182,7 +183,7 @@ class InfoLayer extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
-                  '1 Day',
+                  'Day',
                   style: TextStyle(fontSize: 25),
                 ),
               ),
@@ -210,11 +211,67 @@ class InfoLayer extends StatelessWidget {
                 style: const TextStyle(fontSize: 20),
               ),
             ),
+
             Padding(
               padding:
                   const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
               child: Text(
                 'Vol Change: ${(double.parse(coinBigData!.D1VolChangeOct) * 100).toStringAsFixed(2)}%',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Padding sevenDayCard() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Material(
+        elevation: 2,
+        color: const Color(0xffFFFFFF).withOpacity(0.8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Week',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              child: Text(
+                'Change: ${(double.parse(coinBigData!.D7PriceChangePct) * 100).toStringAsFixed(2)}%',
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Text(
+                'Change: \$${coinBigData!.D7PriceChange}',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Text(
+                'Volume: ${coinBigData!.D7Volume}',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding:
+              const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+              child: Text(
+                'Vol Change: ${(double.parse(coinBigData!.D7VolChangeOct) * 100).toStringAsFixed(2)}%',
                 style: const TextStyle(fontSize: 20),
               ),
             ),
@@ -237,7 +294,7 @@ class InfoLayer extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(top: 8.0),
                 child: Text(
-                  '30 Day',
+                  'Month',
                   style: TextStyle(fontSize: 25),
                 ),
               ),
