@@ -8,6 +8,9 @@ import 'package:layout/pages/detail_page.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+import '../repository/repository.dart';
+import '../util.dart';
+
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);
 
@@ -44,84 +47,92 @@ class _FavoritesPageState extends State<FavoritesPage> {
           if (snapshot.hasData) {
             coinList = snapshot.data;
           }
-          return ListView.builder(
-              itemCount: coinList.length,
-              itemBuilder: (context, index) {
-                coinList[index].D1PriceChangePct.contains('-')
-                    ? isNegative = true
-                    : isNegative = false;
+          return RefreshIndicator(
+            onRefresh: () {
+              var utils = Utils();
+              var repository = MyRepository();
+              utils.makeASnackBar('Refreshing Data', context);
+              return repository.refreshData();
+            },
+            child: ListView.builder(
+                itemCount: coinList.length,
+                itemBuilder: (context, index) {
+                  coinList[index].D1PriceChangePct.contains('-')
+                      ? isNegative = true
+                      : isNegative = false;
 
-                return GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                DetailPage(symbol: coinList[index].symbol)));
-                  },
-                  child: Card(
-                    elevation: 10,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                          width: 150,
-                          child: Column(
-                            children: [
-                              Padding(
-                                  padding: const EdgeInsets.all(16.0),
-                                  child: coinList[index].logoUrl.contains('svg')
-                                      ? SvgPicture.network(
-                                          coinList[index].logoUrl,
-                                          semanticsLabel:
-                                              coinList[index].symbol,
-                                          width: 75,
-                                          height: 75,
-                                          fit: BoxFit.cover,
-                                        )
-                                      : Image.network(
-                                          coinList[index].logoUrl,
-                                          width: 75,
-                                          height: 75,
-                                          fit: BoxFit.cover,
-                                        )),
-                              Padding(
-                                padding: const EdgeInsets.only(bottom: 8.0),
-                                child: Text(
-                                  coinList[index].symbol,
-                                  style: const TextStyle(fontSize: 18),
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  DetailPage(symbol: coinList[index].symbol)));
+                    },
+                    child: Card(
+                      elevation: 10,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: 150,
+                            child: Column(
+                              children: [
+                                Padding(
+                                    padding: const EdgeInsets.all(16.0),
+                                    child: coinList[index].logoUrl.contains('svg')
+                                        ? SvgPicture.network(
+                                            coinList[index].logoUrl,
+                                            semanticsLabel:
+                                                coinList[index].symbol,
+                                            width: 75,
+                                            height: 75,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Image.network(
+                                            coinList[index].logoUrl,
+                                            width: 75,
+                                            height: 75,
+                                            fit: BoxFit.cover,
+                                          )),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 8.0),
+                                  child: Text(
+                                    coinList[index].symbol,
+                                    style: const TextStyle(fontSize: 18),
+                                  ),
                                 ),
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                              child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                coinList[index].name,
+                                style: const TextStyle(fontSize: 30),
+                                overflow: TextOverflow.fade,
+                              ),
+                              Text(
+                                '\$${coinList[index].price}',
+                                style: const TextStyle(fontSize: 23),
+                              ),
+                              Text(
+                                '${(double.parse(coinList[index].D1PriceChangePct) * 100).toStringAsFixed(2)}%',
+                                style: TextStyle(
+                                    color: isNegative ? Colors.red : Colors.green,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold),
                               ),
                             ],
-                          ),
-                        ),
-                        Expanded(
-                            child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              coinList[index].name,
-                              style: const TextStyle(fontSize: 30),
-                              overflow: TextOverflow.fade,
-                            ),
-                            Text(
-                              '\$${coinList[index].price}',
-                              style: const TextStyle(fontSize: 23),
-                            ),
-                            Text(
-                              '${(double.parse(coinList[index].D1PriceChangePct) * 100).toStringAsFixed(2)}%',
-                              style: TextStyle(
-                                  color: isNegative ? Colors.red : Colors.green,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        ))
-                      ],
+                          ))
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              });
+                  );
+                }),
+          );
         },
       ),
     );

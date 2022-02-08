@@ -7,6 +7,8 @@ import 'package:layout/pages/detail_page.dart';
 import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
 
+import '../util.dart';
+
 class CryptoListPage extends StatefulWidget {
   const CryptoListPage({Key? key}) : super(key: key);
 
@@ -17,6 +19,7 @@ class CryptoListPage extends StatefulWidget {
 class _CryptoListPageState extends State<CryptoListPage> {
   var log = Logger();
   var repository = MyRepository();
+  var utils = Utils();
 
   //final SymbolDao symbolDao = Get.find();
   final CoinBigDataDao coinBigDataDao = Get.find();
@@ -28,6 +31,31 @@ class _CryptoListPageState extends State<CryptoListPage> {
     super.initState();
   }
 
+  void _showAboutDialog() {
+
+    Widget okButton = TextButton(
+      child: const Text('Ok'),
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+    );
+
+    AlertDialog alert = AlertDialog(
+      title: const Text('Cryptology v1.0'),
+      content: const Text('Build Date 2-8-2022\nby Michael May\nIlocode Software'),
+      actions: [
+        okButton,
+      ],
+    );
+
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return alert;
+        });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,12 +63,13 @@ class _CryptoListPageState extends State<CryptoListPage> {
           title: const Text('Cryptology'),
           backgroundColor: Colors.blueGrey,
           actions: [
-            IconButton(
-                onPressed: () {
-                  repository.refreshData();
-                },
-                icon: const Icon(Icons.refresh)),
+            IconButton(onPressed: () {
+
+              _showAboutDialog();
+
+            }, icon: const Icon(Icons.info))
           ],
+
         ),
         body: StreamBuilder<List<CoinBigData>>(
             stream: coinBigDataDao.getAllCoins(),
@@ -48,21 +77,28 @@ class _CryptoListPageState extends State<CryptoListPage> {
               if (snapshot.hasData) {
                 coins.clear();
                 coins = snapshot.data!;
-                return ListView.builder(
-                    itemCount: coins.length,
-                    itemBuilder: (context, index) {
-                      return GestureDetector(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => DetailPage(
-                                        symbol: coins[index].symbol,
-                                      )));
-                        },
-                        child: coinCard(index, coins),
-                      );
-                    });
+                return RefreshIndicator(
+                  onRefresh: () {
+                    utils.makeASnackBar('Refreshing Data', context);
+                    return repository.refreshData();
+
+                  },
+                  child: ListView.builder(
+                      itemCount: coins.length,
+                      itemBuilder: (context, index) {
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => DetailPage(
+                                          symbol: coins[index].symbol,
+                                        )));
+                          },
+                          child: coinCard(index, coins),
+                        );
+                      }),
+                );
               }
               return const Center(child: CircularProgressIndicator());
             }));

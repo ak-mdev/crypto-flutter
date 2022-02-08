@@ -11,6 +11,8 @@ import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+import '../util.dart';
+
 class DetailPage extends StatefulWidget {
   final String symbol;
 
@@ -28,6 +30,7 @@ class _DetailPageState extends State<DetailPage> {
   CoinBigData? coinBigData;
   List<String> symList = [];
   final box = GetStorage();
+
 
   List<String> symbols = [];
 
@@ -61,11 +64,6 @@ class _DetailPageState extends State<DetailPage> {
           title: const Text('Detail'),
           backgroundColor: Colors.blueGrey,
           actions: [
-            IconButton(
-                onPressed: () {
-                  repository.refreshData();
-                },
-                icon: const Icon(Icons.refresh)),
             IconButton(
                 onPressed: () async {
                   //log.i(symbols);
@@ -160,19 +158,27 @@ class InfoLayer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        TitleCard(coinBigData: coinBigData),
-        oneDayCard(),
-        sevenDayCard(),
-        thirtyDayCard()
-      ],
+    return RefreshIndicator(
+      onRefresh: () {
+        var utils = Utils();
+        var repository = MyRepository();
+        utils.makeASnackBar('Refreshing Data', context);
+        return repository.refreshData();
+      },
+      child: ListView(
+        children: [
+          TitleCard(coinBigData: coinBigData),
+          oneDayCard(),
+          sevenDayCard(),
+          thirtyDayCard()
+        ],
+      ),
     );
   }
 
   Padding oneDayCard() {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
@@ -228,7 +234,7 @@ class InfoLayer extends StatelessWidget {
 
   Padding sevenDayCard() {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
@@ -283,7 +289,7 @@ class InfoLayer extends StatelessWidget {
 
   Padding thirtyDayCard() {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
@@ -348,7 +354,7 @@ class TitleCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
         color: const Color(0xffFFFFFF).withOpacity(0.8),
