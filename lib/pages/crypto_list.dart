@@ -7,7 +7,7 @@ import 'package:layout/pages/detail_page.dart';
 import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
 
-import '../util.dart';
+import '../Utils/util.dart';
 
 class CryptoListPage extends StatefulWidget {
   const CryptoListPage({Key? key}) : super(key: key);
