@@ -29,6 +29,4 @@ class ListProvider with ChangeNotifier, DiagnosticableTreeMixin {
     box.write('sym_list', _symList);
     notifyListeners();
   }
-
-
 }
