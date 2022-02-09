@@ -11,7 +11,7 @@ import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../Utils/util.dart';
+import '../utils/util.dart';
 
 class DetailPage extends StatefulWidget {
   final String symbol;

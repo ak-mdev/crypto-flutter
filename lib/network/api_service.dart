@@ -3,7 +3,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:layout/Utils/secret.dart';
+import 'package:layout/utils/secret.dart';
 import 'package:logger/logger.dart';
 
 class APiService {

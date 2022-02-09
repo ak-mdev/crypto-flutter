@@ -9,7 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../repository/repository.dart';
-import '../Utils/util.dart';
+import '../utils/util.dart';
 
 class FavoritesPage extends StatefulWidget {
   const FavoritesPage({Key? key}) : super(key: key);
