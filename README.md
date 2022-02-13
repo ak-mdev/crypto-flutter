@@ -8,6 +8,6 @@ Add secret.dart file to **lib/utils** folder. In secret.dart file, paste the cla
 
 class Secret { String accessKey = 'paste your key here'; }
 
-<img src="https://github.com/maydev99/cryptology/blob/master/media/3phonesmock2.png" width=25% height=25%>
+<img src="https://github.com/maydev99/cryptology/blob/master/media/3phonesmock2.png" width=75% height=75%>
 
 
