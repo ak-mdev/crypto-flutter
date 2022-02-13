@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:glassmorphism/glassmorphism.dart';
 import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/database/coin_big_data_dao.dart';
 import 'package:layout/database/favorites_dao.dart';
@@ -93,8 +92,8 @@ class _DetailPageState extends State<DetailPage> {
 
                 return Stack(
                   children: [
-                    logoImage(),
-                    glassLayer(),
+                   // logoImage(),
+                   // glassLayer(),
                     InfoLayer(coinBigData: coinBigData)
                   ],
                 );
@@ -103,7 +102,7 @@ class _DetailPageState extends State<DetailPage> {
             }));
   }
 
-  GlassmorphicContainer glassLayer() {
+  /*GlassmorphicContainer glassLayer() {
     return GlassmorphicContainer(
         width: double.infinity,
         height: double.infinity,
@@ -125,9 +124,9 @@ class _DetailPageState extends State<DetailPage> {
               const Color(0x20FFFFFF).withOpacity(0.1),
               const Color(0x20FFFFFF).withOpacity(0.1)
             ]));
-  }
+  }*/
 
-  SizedBox logoImage() {
+/*  SizedBox logoImage() {
     return SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -145,7 +144,7 @@ class _DetailPageState extends State<DetailPage> {
                 height: 250,
                 fit: BoxFit.cover,
               ));
-  }
+  }*/
 }
 
 class InfoLayer extends StatelessWidget {
@@ -177,11 +176,13 @@ class InfoLayer extends StatelessWidget {
   }
 
   Padding oneDayCard() {
+    bool isRed = false;
+    coinBigData!.D1PriceChangePct.contains('-') ? isRed = true : isRed = false;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: const Color(0xffFFFFFF).withOpacity(0.8),
+        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -233,11 +234,13 @@ class InfoLayer extends StatelessWidget {
   }
 
   Padding sevenDayCard() {
+    bool isRed = false;
+    coinBigData!.D7PriceChangePct.contains('-') ? isRed = true : isRed = false;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: const Color(0xffFFFFFF).withOpacity(0.8),
+        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -288,11 +291,13 @@ class InfoLayer extends StatelessWidget {
   }
 
   Padding thirtyDayCard() {
+    bool isRed = false;
+    coinBigData!.D30PriceChangePct.contains('-') ? isRed = true : isRed = false;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: const Color(0xffFFFFFF).withOpacity(0.8),
+        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -357,25 +362,48 @@ class TitleCard extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: const Color(0xffFFFFFF).withOpacity(0.8),
+        color: const Color(0xff3e5666).withOpacity(0.8),
         child: Column(
           children: [
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: coinBigData!.logoUrl.contains('svg')
+                    ? SvgPicture.network(
+                  coinBigData!.logoUrl,
+                  semanticsLabel: coinBigData!.symbol,
+                  width: 75,
+                  height: 75,
+                  fit: BoxFit.cover,
+                )
+                    : Image.network(
+                  coinBigData!.logoUrl,
+                  width: 75,
+                  height: 75,
+                  fit: BoxFit.cover,
+                )),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 coinBigData!.name,
-                style: const TextStyle(fontSize: 35),
+                style: const TextStyle(fontSize: 35, color: Colors.white),
               ),
             ),
             Text(
               coinBigData!.symbol,
-              style: const TextStyle(fontSize: 30),
+              style: const TextStyle(fontSize: 20, color: Colors.white),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
               child: Text(
                 '\$${coinBigData!.price}',
-                style: const TextStyle(fontSize: 30),
+                style: const TextStyle(fontSize: 30, color: Colors.white),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
+              child: Text(
+                coinBigData!.timestamp,
+                style: const TextStyle(fontSize: 16, color: Colors.white),
               ),
             ),
           ],
