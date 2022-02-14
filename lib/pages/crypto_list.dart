@@ -3,11 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/database/coin_big_data_dao.dart';
+import 'package:layout/main.dart';
 import 'package:layout/pages/detail_page.dart';
 import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 
 import '../utils/util.dart';
+
 
 class CryptoListPage extends StatefulWidget {
   const CryptoListPage({Key? key}) : super(key: key);
@@ -32,7 +35,6 @@ class _CryptoListPageState extends State<CryptoListPage> {
   }
 
   void _showAboutDialog() {
-
     Widget okButton = TextButton(
       child: const Text('Ok'),
       onPressed: () {
@@ -42,7 +44,8 @@ class _CryptoListPageState extends State<CryptoListPage> {
 
     AlertDialog alert = AlertDialog(
       title: const Text('Cryptology v1.0'),
-      content: const Text('Build Date 2-8-2022\nby Michael May\nIlocode Software'),
+      content:
+          const Text('Build Date 2-8-2022\nby Michael May\nIlocode Software'),
       actions: [
         okButton,
       ],
@@ -53,7 +56,6 @@ class _CryptoListPageState extends State<CryptoListPage> {
         builder: (BuildContext context) {
           return alert;
         });
-
   }
 
   @override
@@ -63,13 +65,12 @@ class _CryptoListPageState extends State<CryptoListPage> {
           title: const Text('Cryptology'),
           backgroundColor: Colors.blueGrey,
           actions: [
-            IconButton(onPressed: () {
-
-              _showAboutDialog();
-
-            }, icon: const Icon(Icons.info))
+            IconButton(
+                onPressed: () {
+                  utils.showAboutDialog(context);
+                },
+                icon: const Icon(Icons.info))
           ],
-
         ),
         body: StreamBuilder<List<CoinBigData>>(
             stream: coinBigDataDao.getAllCoins(),
@@ -81,7 +82,6 @@ class _CryptoListPageState extends State<CryptoListPage> {
                   onRefresh: () {
                     utils.makeASnackBar('Refreshing Data', context);
                     return repository.refreshData();
-
                   },
                   child: ListView.builder(
                       itemCount: coins.length,
