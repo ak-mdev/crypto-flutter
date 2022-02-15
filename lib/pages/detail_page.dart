@@ -102,49 +102,7 @@ class _DetailPageState extends State<DetailPage> {
             }));
   }
 
-  /*GlassmorphicContainer glassLayer() {
-    return GlassmorphicContainer(
-        width: double.infinity,
-        height: double.infinity,
-        borderRadius: 0,
-        linearGradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            const Color(0x20FFFFFF).withOpacity(0.2),
-            const Color(0x20FFFFFF).withOpacity(0.2)
-          ],
-        ),
-        border: 1,
-        blur: 2,
-        borderGradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [
-              const Color(0x20FFFFFF).withOpacity(0.1),
-              const Color(0x20FFFFFF).withOpacity(0.1)
-            ]));
-  }*/
 
-/*  SizedBox logoImage() {
-    return SizedBox(
-        width: double.infinity,
-        height: double.infinity,
-        child: coinBigData!.logoUrl.contains('svg')
-            ? SvgPicture.network(
-                coinBigData!.logoUrl,
-                semanticsLabel: coinBigData!.symbol,
-                width: 250,
-                height: 250,
-                fit: BoxFit.cover,
-              )
-            : Image.network(
-                coinBigData!.logoUrl,
-                width: 250,
-                height: 250,
-                fit: BoxFit.cover,
-              ));
-  }*/
 }
 
 class InfoLayer extends StatelessWidget {
@@ -169,7 +127,8 @@ class InfoLayer extends StatelessWidget {
           TitleCard(coinBigData: coinBigData),
           oneDayCard(),
           sevenDayCard(),
-          thirtyDayCard()
+          thirtyDayCard(),
+          yearCard()
         ],
       ),
     );
@@ -338,6 +297,65 @@ class InfoLayer extends StatelessWidget {
                   const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
               child: Text(
                 'Vol Change: ${(double.parse(coinBigData!.D30VolChangePct) * 100).toStringAsFixed(2)}%',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+  Padding yearCard() {
+    bool isRed = false;
+    coinBigData!.D365PriceChangePct.contains('-') ? isRed = true : isRed = false;
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Material(
+        elevation: 2,
+        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(
+            0xffabffae).withOpacity(0.8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Center(
+              child: Padding(
+                padding: EdgeInsets.only(top: 8.0),
+                child: Text(
+                  'Year',
+                  style: TextStyle(fontSize: 25),
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
+              child: Text(
+                'Change: ${(double.parse(coinBigData!.D365PriceChangePct) * 100)
+                    .toStringAsFixed(2)}%',
+                style: const TextStyle(
+                  fontSize: 20,
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Text(
+                'Change: \$${coinBigData!.D365PriceChange}',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 8.0, right: 8.0),
+              child: Text(
+                'Volume: ${coinBigData!.D365Volume}',
+                style: const TextStyle(fontSize: 20),
+              ),
+            ),
+            Padding(
+              padding:
+              const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+              child: Text(
+                'Vol Change: ${(double.parse(coinBigData!.D365VolChangePct) *
+                    100).toStringAsFixed(2)}%',
                 style: const TextStyle(fontSize: 20),
               ),
             ),

@@ -23,6 +23,8 @@ class _CryptoListPageState extends State<CryptoListPage> {
   var log = Logger();
   var repository = MyRepository();
   var utils = Utils();
+  String ts = '2022-02-15T23:14:00';
+  String ts2 = '2020-02-12 23:57:02';
 
   //final SymbolDao symbolDao = Get.find();
   final CoinBigDataDao coinBigDataDao = Get.find();
@@ -31,6 +33,7 @@ class _CryptoListPageState extends State<CryptoListPage> {
   @override
   void initState() {
     repository.refreshData();
+
     super.initState();
   }
 
@@ -75,9 +78,13 @@ class _CryptoListPageState extends State<CryptoListPage> {
         body: StreamBuilder<List<CoinBigData>>(
             stream: coinBigDataDao.getAllCoins(),
             builder: (_, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              }
               if (snapshot.hasData) {
                 coins.clear();
                 coins = snapshot.data!;
+
                 return RefreshIndicator(
                   onRefresh: () {
                     utils.makeASnackBar('Refreshing Data', context);
@@ -96,8 +103,12 @@ class _CryptoListPageState extends State<CryptoListPage> {
                                         )));
                           },
                           child: coinCard(index, coins),
+
                         );
-                      }),
+
+                      }
+                      ),
+
                 );
               }
               return const Center(child: CircularProgressIndicator());

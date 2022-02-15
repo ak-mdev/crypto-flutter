@@ -31,6 +31,11 @@ class CoinBigData {
   String D30PriceChangePct;
   String D30VolChange;
   String D30VolChangePct;
+  String D365Volume;
+  String D365PriceChange;
+  String D365PriceChangePct;
+  String D365VolChange;
+  String D365VolChangePct;
 
   CoinBigData(
       {this.id,
@@ -59,5 +64,10 @@ class CoinBigData {
       required this.D30PriceChange,
       required this.D30PriceChangePct,
       required this.D30VolChange,
-      required this.D30VolChangePct});
+      required this.D30VolChangePct,
+      required this.D365Volume,
+      required this.D365PriceChange,
+      required this.D365PriceChangePct,
+      required this.D365VolChange,
+      required this.D365VolChangePct});
 }

@@ -84,7 +84,7 @@ class _$AppDatabase extends AppDatabase {
       },
       onCreate: (database, version) async {
         await database.execute(
-            'CREATE TABLE IF NOT EXISTS `CoinBigData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL, `name` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `price` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `circulatingSupply` TEXT NOT NULL, `maxSupply` TEXT NOT NULL, `rank` TEXT NOT NULL, `high` TEXT NOT NULL, `highTimestamp` TEXT NOT NULL, `D1Volume` TEXT NOT NULL, `D1PriceChange` TEXT NOT NULL, `D1PriceChangePct` TEXT NOT NULL, `D1VolChange` TEXT NOT NULL, `D1VolChangeOct` TEXT NOT NULL, `D7Volume` TEXT NOT NULL, `D7PriceChange` TEXT NOT NULL, `D7PriceChangePct` TEXT NOT NULL, `D7VolChange` TEXT NOT NULL, `D7VolChangeOct` TEXT NOT NULL, `D30Volume` TEXT NOT NULL, `D30PriceChange` TEXT NOT NULL, `D30PriceChangePct` TEXT NOT NULL, `D30VolChange` TEXT NOT NULL, `D30VolChangePct` TEXT NOT NULL)');
+            'CREATE TABLE IF NOT EXISTS `CoinBigData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `symbol` TEXT NOT NULL, `name` TEXT NOT NULL, `logoUrl` TEXT NOT NULL, `status` TEXT NOT NULL, `price` TEXT NOT NULL, `timestamp` TEXT NOT NULL, `circulatingSupply` TEXT NOT NULL, `maxSupply` TEXT NOT NULL, `rank` TEXT NOT NULL, `high` TEXT NOT NULL, `highTimestamp` TEXT NOT NULL, `D1Volume` TEXT NOT NULL, `D1PriceChange` TEXT NOT NULL, `D1PriceChangePct` TEXT NOT NULL, `D1VolChange` TEXT NOT NULL, `D1VolChangeOct` TEXT NOT NULL, `D7Volume` TEXT NOT NULL, `D7PriceChange` TEXT NOT NULL, `D7PriceChangePct` TEXT NOT NULL, `D7VolChange` TEXT NOT NULL, `D7VolChangeOct` TEXT NOT NULL, `D30Volume` TEXT NOT NULL, `D30PriceChange` TEXT NOT NULL, `D30PriceChangePct` TEXT NOT NULL, `D30VolChange` TEXT NOT NULL, `D30VolChangePct` TEXT NOT NULL, `D365Volume` TEXT NOT NULL, `D365PriceChange` TEXT NOT NULL, `D365PriceChangePct` TEXT NOT NULL, `D365VolChange` TEXT NOT NULL, `D365VolChangePct` TEXT NOT NULL)');
         await database.execute(
             'CREATE TABLE IF NOT EXISTS `SymbolData` (`id` INTEGER PRIMARY KEY AUTOINCREMENT, `sym` TEXT NOT NULL)');
 
@@ -181,7 +181,12 @@ class _$CoinBigDataDao extends CoinBigDataDao {
                   'D30PriceChange': item.D30PriceChange,
                   'D30PriceChangePct': item.D30PriceChangePct,
                   'D30VolChange': item.D30VolChange,
-                  'D30VolChangePct': item.D30VolChangePct
+                  'D30VolChangePct': item.D30VolChangePct,
+                  'D365Volume': item.D365Volume,
+                  'D365PriceChange': item.D365PriceChange,
+                  'D365PriceChangePct': item.D365PriceChangePct,
+                  'D365VolChange': item.D365VolChange,
+                  'D365VolChangePct': item.D365VolChangePct
                 },
             changeListener),
         _coinBigDataDeletionAdapter = DeletionAdapter(
@@ -215,7 +220,12 @@ class _$CoinBigDataDao extends CoinBigDataDao {
                   'D30PriceChange': item.D30PriceChange,
                   'D30PriceChangePct': item.D30PriceChangePct,
                   'D30VolChange': item.D30VolChange,
-                  'D30VolChangePct': item.D30VolChangePct
+                  'D30VolChangePct': item.D30VolChangePct,
+                  'D365Volume': item.D365Volume,
+                  'D365PriceChange': item.D365PriceChange,
+                  'D365PriceChangePct': item.D365PriceChangePct,
+                  'D365VolChange': item.D365VolChange,
+                  'D365VolChangePct': item.D365VolChangePct
                 },
             changeListener);
 
@@ -259,7 +269,12 @@ class _$CoinBigDataDao extends CoinBigDataDao {
             D30PriceChange: row['D30PriceChange'] as String,
             D30PriceChangePct: row['D30PriceChangePct'] as String,
             D30VolChange: row['D30VolChange'] as String,
-            D30VolChangePct: row['D30VolChangePct'] as String),
+            D30VolChangePct: row['D30VolChangePct'] as String,
+            D365Volume: row['D365Volume'] as String,
+            D365PriceChange: row['D365PriceChange'] as String,
+            D365PriceChangePct: row['D365PriceChangePct'] as String,
+            D365VolChange: row['D365VolChange'] as String,
+            D365VolChangePct: row['D365VolChangePct'] as String),
         queryableName: 'CoinBigData',
         isView: false);
   }
@@ -295,7 +310,12 @@ class _$CoinBigDataDao extends CoinBigDataDao {
             D30PriceChange: row['D30PriceChange'] as String,
             D30PriceChangePct: row['D30PriceChangePct'] as String,
             D30VolChange: row['D30VolChange'] as String,
-            D30VolChangePct: row['D30VolChangePct'] as String),
+            D30VolChangePct: row['D30VolChangePct'] as String,
+            D365Volume: row['D365Volume'] as String,
+            D365PriceChange: row['D365PriceChange'] as String,
+            D365PriceChangePct: row['D365PriceChangePct'] as String,
+            D365VolChange: row['D365VolChange'] as String,
+            D365VolChangePct: row['D365VolChangePct'] as String),
         arguments: [symbol],
         queryableName: 'CoinBigData',
         isView: false);
@@ -339,7 +359,12 @@ class _$CoinBigDataDao extends CoinBigDataDao {
             D30PriceChange: row['D30PriceChange'] as String,
             D30PriceChangePct: row['D30PriceChangePct'] as String,
             D30VolChange: row['D30VolChange'] as String,
-            D30VolChangePct: row['D30VolChangePct'] as String),
+            D30VolChangePct: row['D30VolChangePct'] as String,
+            D365Volume: row['D365Volume'] as String,
+            D365PriceChange: row['D365PriceChange'] as String,
+            D365PriceChangePct: row['D365PriceChangePct'] as String,
+            D365VolChange: row['D365VolChange'] as String,
+            D365VolChangePct: row['D365VolChangePct'] as String),
         arguments: [...symList]);
   }
 

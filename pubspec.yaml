@@ -18,6 +18,7 @@ dependencies:
   provider: ^6.0.2
   get_storage: ^2.0.3
   awesome_dialog: ^2.1.2
+  intl: any
 
 
   flutter:

@@ -1,7 +1,10 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 
 class Utils {
+  Logger log = Logger();
 
   void makeASnackBar(String message, BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
@@ -26,5 +29,13 @@ class Utils {
       btnOkOnPress: () {},
 
     ).show();
+  }
+
+  convertUTC(String timeStamp) {
+    timeStamp = timeStamp.replaceAll('Z', '');
+    timeStamp = timeStamp.replaceAll('T', ' ');
+    var dateTime = DateFormat('yyyy-MM-dd HH:mm:ss').parse(timeStamp, true);
+    log.i(dateTime.toLocal());
+    return dateTime.toLocal();
   }
 }
