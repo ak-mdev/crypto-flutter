@@ -11,7 +11,7 @@ class APiService {
   var secret = Secret();
 
   Future getCoinData(String coinList) async {
-    var url = 'https://api.nomics.com/v1/currencies/ticker?key=${secret.accessKey}&ids=$coinList&interval=1d,7d,30d,365d&per-page=100&page=1';
+    var url = 'https://api.nomics.com/v1/currencies/ticker?key=${secret.accessKey}&ids=$coinList&interval=1d,7d,30d,365d&per-page=120&page=1';
     final response = await http.get(Uri.parse(url));
     List coinData = json.decode(response.body);
     //log.i(response.statusCode);

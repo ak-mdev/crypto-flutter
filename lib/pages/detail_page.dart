@@ -30,7 +30,6 @@ class _DetailPageState extends State<DetailPage> {
   List<String> symList = [];
   final box = GetStorage();
 
-
   List<String> symbols = [];
 
   bool favIsSelected = false;
@@ -86,14 +85,15 @@ class _DetailPageState extends State<DetailPage> {
             builder: (_, snapshot) {
               if (snapshot.hasData) {
                 coinBigData = snapshot.data;
+                //calculateSupplyPercentage(coinBigData!);
                 coinBigData!.price.contains('-')
                     ? isNegative = true
                     : isNegative = false;
 
                 return Stack(
                   children: [
-                   // logoImage(),
-                   // glassLayer(),
+                    // logoImage(),
+                    // glassLayer(),
                     InfoLayer(coinBigData: coinBigData)
                   ],
                 );
@@ -101,8 +101,6 @@ class _DetailPageState extends State<DetailPage> {
               return const Center(child: CircularProgressIndicator());
             }));
   }
-
-
 }
 
 class InfoLayer extends StatelessWidget {
@@ -125,12 +123,71 @@ class InfoLayer extends StatelessWidget {
       child: ListView(
         children: [
           TitleCard(coinBigData: coinBigData),
+          highSupplyCard(),
           oneDayCard(),
           sevenDayCard(),
           thirtyDayCard(),
           yearCard()
         ],
       ),
+    );
+  }
+
+  Padding highSupplyCard() {
+    var utils = Utils();
+    return Padding(
+      padding: const EdgeInsets.all(4.0),
+      child: Card(
+          elevation: 2,
+          color: Colors.blueGrey.withOpacity(0.8),
+          child: Padding(
+            padding: const EdgeInsets.only(top: 16.0, bottom: 16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'High Price:',
+                        style: TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      Text(
+                        '\$${coinBigData!.high}',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+                      Text(
+                        '${utils.convertUTC(coinBigData!.highTimestamp, false)}',
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 18),
+                      )
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        '${utils.calculatePercentFromHigh(coinBigData!.high, coinBigData!.price)}% from High',
+                        style: const TextStyle(fontSize: 18, color: Colors.white),
+                      ),
+
+                      Text(
+                        '${utils.calculateSupplyPercentage(coinBigData!.maxSupply, coinBigData!.circulatingSupply)}% Circulating',
+                        style: const TextStyle(color: Colors.white, fontSize: 18),
+                      ),
+
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 
@@ -141,7 +198,9 @@ class InfoLayer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(0xffabffae).withOpacity(0.8),
+        color: isRed
+            ? const Color(0xffffabab).withOpacity(0.8)
+            : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -177,7 +236,6 @@ class InfoLayer extends StatelessWidget {
                 style: const TextStyle(fontSize: 20),
               ),
             ),
-
             Padding(
               padding:
                   const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
@@ -199,7 +257,9 @@ class InfoLayer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(0xffabffae).withOpacity(0.8),
+        color: isRed
+            ? const Color(0xffffabab).withOpacity(0.8)
+            : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -237,7 +297,7 @@ class InfoLayer extends StatelessWidget {
             ),
             Padding(
               padding:
-              const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
               child: Text(
                 'Vol Change: ${(double.parse(coinBigData!.D7VolChangeOct) * 100).toStringAsFixed(2)}%',
                 style: const TextStyle(fontSize: 20),
@@ -256,7 +316,9 @@ class InfoLayer extends StatelessWidget {
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(0xffabffae).withOpacity(0.8),
+        color: isRed
+            ? const Color(0xffffabab).withOpacity(0.8)
+            : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -305,15 +367,19 @@ class InfoLayer extends StatelessWidget {
       ),
     );
   }
+
   Padding yearCard() {
     bool isRed = false;
-    coinBigData!.D365PriceChangePct.contains('-') ? isRed = true : isRed = false;
+    coinBigData!.D365PriceChangePct.contains('-')
+        ? isRed = true
+        : isRed = false;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Material(
         elevation: 2,
-        color: isRed ? const Color(0xffffabab).withOpacity(0.8) : const Color(
-            0xffabffae).withOpacity(0.8),
+        color: isRed
+            ? const Color(0xffffabab).withOpacity(0.8)
+            : const Color(0xffabffae).withOpacity(0.8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -329,8 +395,7 @@ class InfoLayer extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
               child: Text(
-                'Change: ${(double.parse(coinBigData!.D365PriceChangePct) * 100)
-                    .toStringAsFixed(2)}%',
+                'Change: ${(double.parse(coinBigData!.D365PriceChangePct) * 100).toStringAsFixed(2)}%',
                 style: const TextStyle(
                   fontSize: 20,
                 ),
@@ -352,10 +417,9 @@ class InfoLayer extends StatelessWidget {
             ),
             Padding(
               padding:
-              const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
+                  const EdgeInsets.only(left: 8.0, right: 8.0, bottom: 8.0),
               child: Text(
-                'Vol Change: ${(double.parse(coinBigData!.D365VolChangePct) *
-                    100).toStringAsFixed(2)}%',
+                'Vol Change: ${(double.parse(coinBigData!.D365VolChangePct) * 100).toStringAsFixed(2)}%',
                 style: const TextStyle(fontSize: 20),
               ),
             ),
@@ -387,18 +451,18 @@ class TitleCard extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: coinBigData!.logoUrl.contains('svg')
                     ? SvgPicture.network(
-                  coinBigData!.logoUrl,
-                  semanticsLabel: coinBigData!.symbol,
-                  width: 75,
-                  height: 75,
-                  fit: BoxFit.cover,
-                )
+                        coinBigData!.logoUrl,
+                        semanticsLabel: coinBigData!.symbol,
+                        width: 75,
+                        height: 75,
+                        fit: BoxFit.cover,
+                      )
                     : Image.network(
-                  coinBigData!.logoUrl,
-                  width: 75,
-                  height: 75,
-                  fit: BoxFit.cover,
-                )),
+                        coinBigData!.logoUrl,
+                        width: 75,
+                        height: 75,
+                        fit: BoxFit.cover,
+                      )),
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
