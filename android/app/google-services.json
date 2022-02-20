@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "265229541131",
+    "project_id": "cryptology-676ef",
+    "storage_bucket": "cryptology-676ef.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:265229541131:android:938091f4ae4128907b4c0e",
+        "android_client_info": {
+          "package_name": "com.bombadu.cryptology"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "265229541131-67n8u3jhk2sli1oj63jnmc0t5utuv4m6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bombadu.cryptology",
+            "certificate_hash": "20e89950b021215a069e336f4e69f9630c5a4854"
+          }
+        },
+        {
+          "client_id": "265229541131-k0o4ph55r6cfsffpcqjio72ie1dqkh61.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBXC8MPBpo1Kydm5rLLVqR3IGK81aLerCM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "265229541131-k0o4ph55r6cfsffpcqjio72ie1dqkh61.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

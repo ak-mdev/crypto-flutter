@@ -4,13 +4,18 @@ import 'package:get_storage/get_storage.dart';
 import 'package:layout/pages/crypto_list.dart';
 import 'package:layout/pages/favorites_page.dart';
 import 'package:layout/database/provider.dart';
+import 'package:layout/pages/trade_page.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
+
+
+import 'package:firebase_core/firebase_core.dart';
 
 import 'database/database.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await GetStorage.init();
   final database =
       await $FloorAppDatabase.databaseBuilder('my_database.db').build();
@@ -19,10 +24,9 @@ Future<void> main() async {
   Get.put(favoritesDao);
   Get.put(coinDao);
   runApp(MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ListProvider())
-      ],
-  child: const MyApp(),));
+    providers: [ChangeNotifierProvider(create: (_) => ListProvider())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -49,10 +53,13 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   int currentIndex = 0;
   var log = Logger();
-  final pages = [const CryptoListPage(), const FavoritesPage()];
+  final pages = [
+    const CryptoListPage(),
+    const FavoritesPage(),
+    const TradePage()
+  ];
   final box = GetStorage();
   List myList = [];
-
 
   @override
   void initState() {
@@ -60,12 +67,11 @@ class _MyHomePageState extends State<MyHomePage> {
     getFavoritesList();
   }
 
-  Future<void>getFavoritesList() async {
+  Future<void> getFavoritesList() async {
     myList = await box.read('sym_list');
     await context.read<ListProvider>().setSymList(myList);
-   // log.i(myList);
+    // log.i(myList);
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -80,14 +86,11 @@ class _MyHomePageState extends State<MyHomePage> {
         backgroundColor: Colors.blueGrey,
         selectedItemColor: Colors.white,
         unselectedItemColor: Colors.white60,
-
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.list_alt), label: 'Cryptos'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.list_alt),
-              label: 'Cryptos'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.favorite_border_outlined),
-              label: 'Favorite'),
+              icon: Icon(Icons.favorite_border_outlined), label: 'Favorite'),
+          BottomNavigationBarItem(icon: Icon(Icons.games), label: 'Trade Game')
         ],
       ),
     );
