@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
 import 'package:layout/database/coin_big_data.dart';
 import 'package:layout/database/coin_big_data_dao.dart';
-import 'package:layout/main.dart';
 import 'package:layout/pages/detail_page.dart';
 import 'package:layout/repository/repository.dart';
 import 'package:logger/logger.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:provider/provider.dart';
 
+import '../auth/google_sign_in_provider.dart';
 import '../utils/util.dart';
 
 
@@ -29,40 +29,13 @@ class _CryptoListPageState extends State<CryptoListPage> {
   //final SymbolDao symbolDao = Get.find();
   final CoinBigDataDao coinBigDataDao = Get.find();
   List<CoinBigData> coins = [];
+  int count = 0;
 
-  @override
-  void initState() {
-    repository.refreshData();
 
-    super.initState();
-  }
-
-  void _showAboutDialog() {
-    Widget okButton = TextButton(
-      child: const Text('Ok'),
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-    );
-
-    AlertDialog alert = AlertDialog(
-      title: const Text('Cryptology v1.0'),
-      content:
-          const Text('Build Date 2-8-2022\nby Michael May\nIlocode Software'),
-      actions: [
-        okButton,
-      ],
-    );
-
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return alert;
-        });
-  }
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
         appBar: AppBar(
           title: const Text('Cryptology'),
@@ -72,7 +45,13 @@ class _CryptoListPageState extends State<CryptoListPage> {
                 onPressed: () {
                   utils.showAboutDialog(context);
                 },
-                icon: const Icon(Icons.info))
+                icon: const Icon(Icons.info)),
+            IconButton(onPressed: () {
+              final provider =
+              Provider.of<GoogleSignInProvider>(context, listen: false);
+              provider.logOut();
+            }, icon: const Icon(Icons.logout))
+
           ],
         ),
         body: StreamBuilder<List<CoinBigData>>(

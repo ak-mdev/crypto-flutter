@@ -10,6 +10,7 @@ class MyRepository {
     final CoinBigDataDao coinBigDataDao = Get.find();
     List data = [];
     var log = Logger();
+    /*log.i('******************Refresh');*/
     var utils = Utils();
 
     final apiService = APiService();
