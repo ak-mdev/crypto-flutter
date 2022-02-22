@@ -54,7 +54,7 @@ class Utils {
     double max = double.parse(maxSupply);
     double circ = double.parse(circulatingSupply);
     if (max == 0.0) {
-      return '-0-';
+      return '--';
     } else {
       double supplyPctD = circ / max;
       //log.i('max: $max - circ: $circ - pct: $supplyPctD');
